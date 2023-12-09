@@ -283,6 +283,33 @@ namespace Labb1SQL
         // Case 7 - Add Student to the student table
         static void AddStudent(SqlConnection connection)
         {
+            Console.Clear();
+            Console.WriteLine("Adding New Student");
+
+            Console.WriteLine("Enter first name:");
+            string firstName = Console.ReadLine();
+
+            Console.WriteLine("Enter last name:");
+            string lastName = Console.ReadLine();
+
+            Console.WriteLine("Class (1 or 2):");
+            int classID = int.Parse(Console.ReadLine());
+
+            string query = $"INSERT INTO Students (FirstName, LastName, FK_ClassID) " +
+                           $"VALUES ('{firstName}', '{lastName}', '{classID}')";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                // Add parameters with values
+                command.Parameters.AddWithValue("@FirstName", firstName);
+                command.Parameters.AddWithValue("@LastName", lastName);
+                command.Parameters.AddWithValue("@FK_ClassID", classID);
+
+                int rowsAffected = command.ExecuteNonQuery();
+                Console.WriteLine("Added student:" + firstName);
+                Console.WriteLine($"{rowsAffected} row(s) affected.");
+            }
+            ReturntoMenu(connection);
 
         }
 
